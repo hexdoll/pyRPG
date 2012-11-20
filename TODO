@@ -1,0 +1,15 @@
+character that moves and animates http://pygame.org/wiki/Spritesheet 
+import sprites http://untamed.wild-refuge.net/rmxpresources.php?characters
+scrolling scenery
+colision detection (no walking through walls)
+sound
+interaction with objects (pickups, multiple state objects like switches)
+between scene portals e.g. doors
+Static NPCs
+shops
+Moving NPCs (Randomly wandering, pathfinding, patrolling)
+NPC behaviour
+inventory
+character dialogs
+save game
+load game
