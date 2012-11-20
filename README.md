@@ -1,0 +1,4 @@
+pyRPG
+=====
+
+Experimental pygame RPG
