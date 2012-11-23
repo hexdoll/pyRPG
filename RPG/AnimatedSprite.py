@@ -15,7 +15,7 @@ class AnimatedSprite:
 
     images = []
     direction = DIRECTION_DOWN
-    counter = 0
+    counter = 0 #number of times we've displayed the current frame
     speed = 10 # frames per second
     frame = 0 #frame of walk cycle we're on
 
