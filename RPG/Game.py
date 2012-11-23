@@ -13,7 +13,7 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
-        self.scene = Scene()
+        self.scene = Scene('wedding')
         self.player = Player()
 
     def MainLoop(self):
