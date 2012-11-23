@@ -1,7 +1,7 @@
 character that moves and animates http://pygame.org/wiki/Spritesheet 
 import sprites http://untamed.wild-refuge.net/rmxpresources.php?characters
 scrolling scenery
-colision detection (no walking through walls)
+colision detection (no walking through walls) http://thepythongamebook.com/en:pygame:step018
 sound
 interaction with objects (pickups, multiple state objects like switches)
 between scene portals e.g. doors
