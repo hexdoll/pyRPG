@@ -32,6 +32,7 @@ class AnimatedSprite:
     def image_at(self, rectangle, colorkey = None):
         rect = pygame.Rect(rectangle)
         image = pygame.Surface(rect.size).convert_alpha()
+        image.fill((0,0,0,0)) #transparent background
         image.blit(self.sheet, (0, 0), rect)
         if colorkey is not None:
             if colorkey is -1:
