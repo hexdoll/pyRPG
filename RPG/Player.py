@@ -4,6 +4,7 @@ class Player:
     name = 'Player'
     position = {'x': 100, 'y': 100}
     direction = 'down'
+    label = False #displays player name above head
 
     SPEED_MULTIPLIER = 3 #movement to sprite frame speed multiplier
     SPEED_WALK = 5
@@ -20,6 +21,12 @@ class Player:
     def render(self, screen):
         screen.blit(self.sprite.get_frame(), (self.position['x'], self.position['y']))
 
+        if (self.label):
+            font = pygame.font.Font(None, 20)
+            text = font.render(self.name , 1, (255, 0, 0))
+            screen.blit(text, (self.position['x'],self.position['y']))
+
+    #for debug
     def render_mask(self, screen):
         screen.blit(self.collision, (self.position['x'], self.position['y']))
 
