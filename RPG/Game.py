@@ -2,6 +2,7 @@ import pygame
 
 from RPG.Scene import Scene
 from RPG.Player import Player
+from RPG.AnimatedSprite import AnimatedSprite
 
 # code from http://www.gamedev.net/topic/444490-pygame-easy-as-py/
 class Game:
@@ -14,7 +15,10 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.scene = Scene('wedding')
-        self.player = Player()
+
+        sprite = AnimatedSprite(self.clock, 'data/sprites/player/player.png')
+        self.player = Player('test', sprite)
+
 
     def MainLoop(self):
         keepGoing = True
@@ -35,6 +39,7 @@ class Game:
                 elif event.type == pygame.KEYUP:
                     if pygame.key.name(event.key) == direction:
                         direction = ''
+                        self.player.stop()
                     #print keyName + ' released'
 
             if direction == 'up':
