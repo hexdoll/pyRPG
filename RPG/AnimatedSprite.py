@@ -1,23 +1,29 @@
 import pygame
 '''
-Animated sprite class for working with sprites that can move in 4 directions
+Animated sprite class
+Reads in sprite sheets uses that to animate
 '''
 
 class AnimatedSprite:
-    SPRITE_WIDTH = 4
-    SPRITE_HEIGHT = 4
-
-    DIRECTIONS = 4
-    DIRECTION_DOWN = 0
-    DIRECTION_LEFT = 1
-    DIRECTION_RIGHT = 2
-    DIRECTION_UP = 3
-
-    images = []
-    direction = DIRECTION_DOWN
+    images = [] #array of all sprites
+    animations = {}
+    animation = [] #which animation?
     counter = 0 #number of times we've displayed the current frame
     speed = 10 # frames per second
-    frame = 0 #frame of walk cycle we're on
+    frame = 0 #frame of animation cycle we're on
+
+    #configurable animations
+    #Hard coded for now
+    animations = {
+        'default': [(0,0)],
+        'down': [(0,0),(1,0),(2,0),(3,0)],
+        'up': [(0,3),(1,3),(2,3),(3,3)],
+        'left': [(0,1),(1,1),(2,1),(3,1)],
+        'right': [(0,2),(1,2),(2,2),(3,2)],
+        'spin': [(0,0),(0,1),(0,3),(0,2)]
+    }
+    #Hard coded for now
+    size = (27,47)
 
     def __init__(self, clock, filename):
         self.clock = clock
@@ -26,10 +32,11 @@ class AnimatedSprite:
         except pygame.error, message:
             print 'Unable to load spritesheet image:', filename
             raise SystemExit,message
-        self.split()
+        self._split()
+        self.set_animation('default')
 
     # from http://pygame.org/wiki/Spritesheet
-    def image_at(self, rectangle, colorkey = None):
+    def _image_at(self, rectangle, colorkey = None):
         rect = pygame.Rect(rectangle)
         image = pygame.Surface(rect.size).convert_alpha()
         image.fill((0,0,0,0)) #transparent background
@@ -40,37 +47,37 @@ class AnimatedSprite:
             image.set_colorkey(colorkey, pygame.RLEACCEL)
         return image
 
-    def split(self):
-        height = self.sheet.get_height() / self.SPRITE_HEIGHT
-        width = self.sheet.get_width() / self.SPRITE_HEIGHT
+    def _split(self):
+        (width, height) = self.size
 
-        for x in range(self.SPRITE_WIDTH):
+        for x in range(self.sheet.get_width() / width):
             self.images.append([])
-            for y in range(self.SPRITE_HEIGHT):
-                self.images[x].append(self.image_at((x*width, y*height, width,height)))
+            for y in range(self.sheet.get_height() / height):
+                self.images[x].append(self._image_at((x*width, y*height, width, height)))
     
+    #reset starts the animation from the beginning
+    def set_animation(self, animation, reset=False):
+        if animation in self.animations:
+            self.animation = animation
+        if reset:
+            self.frame = 0
+
     def get_frame(self):
-        # print 'frame: %.0f' % self.frame
-        # print 'counter: %.0f' % self.counter
-        # fps = self.clock.get_fps()
-        # print 'fps: %.2f' % fps
-        # if self.counter > fps / self.speed:
+        animation = self.animations[self.animation]
+        self.frame = self.frame % len(animation) # loop to beginning of animation
+
+        (x,y) = animation[self.frame]
+
+        if self.speed == 0: #prevents div by 0 in frame counter
+            return self.images[x][y]
         
         #how many times to display each frame
         if self.counter > self.clock.get_fps() / self.speed:
             self.counter = 0
             self.frame += 1
-
-            #self.images[direction][frame] still
-            #self.images[x][0] spinning
-            #self.images[direction][frame] walking
-
-        if self.frame > self.SPRITE_WIDTH-1: # loop to beginning of animation
-            self.frame = 0
-        
-        image = self.images[self.frame][self.direction]
+    
         self.counter += 1
 
         # print self.counter
         # print self.frame
-        return image
+        return self.images[x][y]
