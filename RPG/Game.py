@@ -42,19 +42,21 @@ class Game:
                         direction = ''
                         self.player.stop()
                     #print keyName + ' released'
+
+            if direction == 'up':
+               self.player.go_up()
+            elif direction == 'down':
+               self.player.go_down()
+            elif direction == 'left':
+               self.player.go_left()
+            elif direction == 'right':
+               self.player.go_right()
+
             if self.scene.detect_collision():
+                self.player.resolve_collision()
                 font = pygame.font.Font(None, 36)
                 text = font.render("collision" , 1, (255, 0, 0))
                 self.screen.blit(text, (0,0))
-            else: 
-                if direction == 'up':
-                   self.player.go_up()
-                elif direction == 'down':
-                   self.player.go_down()
-                elif direction == 'left':
-                   self.player.go_left()
-                elif direction == 'right':
-                   self.player.go_right()
 
             self.scene.render_background(self.screen)
             self.scene.render_mask(self.screen) #debug
