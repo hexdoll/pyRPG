@@ -2,9 +2,8 @@ import pygame
 
 class Scene:
     IMAGE_DIR = 'data/scenes/'
-    #background
-    #foreground
-    #collision
+
+    characters = []
 
     def __init__(self, name='test'):
         self.name = name
@@ -16,10 +15,21 @@ class Scene:
         self.foreground = self.foreground.convert_alpha()
 
         self.collision = pygame.image.load(self.IMAGE_DIR + self.name + '/collision.png')
-        self.collision = pygame.mask.from_surface(self.collision)
+        self.collision_mask = pygame.mask.from_surface(self.collision)
 
-    def renderBackground(self, screen):
+    def render_background(self, screen):
         screen.blit(self.background, (0,0))
 
-    def renderForeground(self, screen):
+    def render_foreground(self, screen):
         screen.blit(self.foreground, (0,0))
+
+    def render_mask(self, screen):
+        screen.blit(self.collision, (0,0))
+
+    def add_player(self, player):
+        self.player = player
+
+    def detect_collision(self):
+        return self.collision_mask.overlap(self.player.collision_mask,
+                (self.player.position['x'], self.player.position['y'])
+        )

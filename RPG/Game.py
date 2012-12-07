@@ -14,11 +14,12 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
-        self.scene = Scene('wedding')
 
         sprite = AnimatedSprite(self.clock, 'data/sprites/player/player.png')
         self.player = Player('test', sprite)
 
+        self.scene = Scene('wedding')
+        self.scene.add_player(self.player)
 
     def MainLoop(self):
         keepGoing = True
@@ -41,18 +42,25 @@ class Game:
                         direction = ''
                         self.player.stop()
                     #print keyName + ' released'
+            if self.scene.detect_collision():
+                font = pygame.font.Font(None, 36)
+                text = font.render("collision" , 1, (255, 0, 0))
+                self.screen.blit(text, (0,0))
+            else: 
+                if direction == 'up':
+                   self.player.go_up()
+                elif direction == 'down':
+                   self.player.go_down()
+                elif direction == 'left':
+                   self.player.go_left()
+                elif direction == 'right':
+                   self.player.go_right()
 
-            if direction == 'up':
-               self.player.go_up()
-            elif direction == 'down':
-               self.player.go_down()
-            elif direction == 'left':
-               self.player.go_left()
-            elif direction == 'right':
-               self.player.go_right()
-
-            self.scene.renderBackground(self.screen)
+            self.scene.render_background(self.screen)
+            self.scene.render_mask(self.screen) #debug
+            self.player.render_mask(self.screen) #debug
             self.player.render(self.screen)
-            self.scene.renderForeground(self.screen)
+            self.scene.render_foreground(self.screen)
+
             #draw dialog boxes
             pygame.display.flip()

@@ -14,12 +14,29 @@ class Player:
         self.name = name
         self.sprite = sprite
 
+        self.collision = pygame.image.load('data/sprites/player/collision.png')
+        self.collision_mask = pygame.mask.from_surface(self.collision)
+
     def render(self, screen):
         screen.blit(self.sprite.get_frame(), (self.position['x'], self.position['y']))
+
+    def render_mask(self, screen):
+        screen.blit(self.collision, (self.position['x'], self.position['y']))
 
     def set_speed(self, speed):
         self.speed = speed
         self.sprite.speed = speed * self.SPEED_MULTIPLIER
+
+    def resolve_collision(self):
+        #horrible hack will fix later
+        if self.direction == 'left':
+            self.position['x'] += self.speed
+        if self.direction == 'right':
+            self.position['x'] -= self.speed
+        if self.direction == 'up':
+            self.position['y'] += self.speed
+        if self.direction == 'down':
+            self.position['y'] -= self.speed
 
     def go_up(self):
         self.direction = 'up'
